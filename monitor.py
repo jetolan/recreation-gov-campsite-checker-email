@@ -8,6 +8,7 @@ import json
 
 def send_email(message, sender_email, password, receiver_email):
     #https://realpython.com/python-send-email/
+    #https://support.google.com/accounts/answer/185833?hl=en
 
     port = 465  # For SSL
     smtp_server = "smtp.gmail.com"
@@ -39,14 +40,16 @@ def check_site(park_id, start_date, end_date, sender_email, password, receiver_e
     return message
     
 if __name__=="__main__":
+    #nb this is system dependent
+    path="/Users/jetolan/src/recreation-gov-campsite-checker-email"
 
-    with open('cred.json') as src:
+    with open(f'{path}/cred.json') as src:
         data = json.load(src)
     sender_email=data['sender_email']
     password=data['password']
     receiver_email=data['receiver_email']
 
-    outfile='log.csv'
+    outfile=f'{path}/log.csv'
     
     
     park_id=232466 #cougar rock campground
