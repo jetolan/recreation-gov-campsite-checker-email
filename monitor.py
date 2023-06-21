@@ -3,6 +3,7 @@ import datetime
 from email.message import EmailMessage
 import smtplib,ssl
 import json
+import time
 
 
 
@@ -83,3 +84,4 @@ if __name__=="__main__":
     message=check_site(park_id, start_date, end_date, sender_email, password, receiver_email)
     with open(outfile, 'a') as f:
         f.write(f"{message},\n")
+
