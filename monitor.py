@@ -20,7 +20,7 @@ def send_email(message, sender_email, password, receiver_email):
         server.sendmail(sender_email, receiver_email, message)
 
 
-def check_site(park_id, start_date, end_date, sender_email, password, receiver_email):
+def check_site(park_id, start_date, end_date, sender_email, password, receiver_email, num_sites=1):
     # https://github.com/banool/recreation-gov-campsite-checker
     success=False
     while not success:
@@ -30,13 +30,12 @@ def check_site(park_id, start_date, end_date, sender_email, password, receiver_e
         except RuntimeError:
             time.sleep(20)
     cur_time = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
-    message = f"{num_avail} sites available at {name} on {start_date} [{cur_time}]"
+    message = f"{num_avail} sites available at {name} on {start_date} at {cur_time}"
     print(message)
-    if num_avail>0:
+    if num_avail>=num_sites:
         #send email
         print('sending email')
         message = f"{num_avail} sites available at {name} on {start_date}"
-        print(message)
         send_email(message, sender_email, password, receiver_email)
     return message
     
@@ -76,12 +75,27 @@ if __name__=="__main__":
     message=check_site(park_id, start_date, end_date, sender_email, password, receiver_email)
     with open(outfile, 'a') as f:
         f.write(f"{message},\n")
-    
+    '''
     park_id=234039 #manzanita lake
     start_date=datetime.date(2023, 7, 2)
     end_date=datetime.date(2023, 7, 3)
     
     message=check_site(park_id, start_date, end_date, sender_email, password, receiver_email)
+    with open(outfile, 'a') as f:
+        f.write(f"{message},\n")
+    '''
+    
+    park_id=232099 #silver fir
+    start_date=datetime.date(2023, 7, 21)
+    end_date=datetime.date(2023, 7, 22)
+    message=check_site(park_id, start_date, end_date, sender_email, password, receiver_email,num_sites=2)
+    with open(outfile, 'a') as f:
+        f.write(f"{message},\n")
+
+    park_id=232099 #silver fir
+    start_date=datetime.date(2023, 7, 22)
+    end_date=datetime.date(2023, 7, 23)
+    message=check_site(park_id, start_date, end_date, sender_email, password, receiver_email,num_sites=2)
     with open(outfile, 'a') as f:
         f.write(f"{message},\n")
 
